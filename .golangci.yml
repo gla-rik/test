@@ -1,0 +1,81 @@
+version: "2"
+run:
+  modules-download-mode: vendor
+  issues-exit-code: 1
+linters:
+  enable:
+    - bodyclose
+    - copyloopvar
+    - dupl
+    - err113
+    - errchkjson
+    - errname
+    - errorlint
+    - gochecknoglobals
+    - gocritic
+    - gosec
+    - importas
+    - mnd
+    - paralleltest
+    - revive
+    - staticcheck
+    - unparam
+    - varnamelen
+    - wsl_v5
+  settings:
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    varnamelen:
+      max-distance: 20
+      min-name-length: 2
+    wsl_v5:  # новые валидные настройки
+      allow-first-in-block: true
+      allow-whole-block: false
+      branch-max-lines: 2
+      enable:
+        - err
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - bodyclose
+          - dupl
+          - gochecknoglobals
+        path: ^test/
+      - linters:
+          - staticcheck
+        path: _config\.go$
+      - linters:
+          - mnd
+        path: internal/event/listener\.go$
+      - linters:
+          - mnd
+        path: test/factory\.go$
+      - linters:
+          - wsl_v5
+        path: (.+)_pkg\.go
+      - linters:
+          - revive
+        path: internal/orm/migration/migration.go
+    paths:
+      - build
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gci
+    - gofmt
+  exclusions:
+    generated: lax
+    paths:
+      - build
+      - third_party$
+      - builtin$
+      - examples$
