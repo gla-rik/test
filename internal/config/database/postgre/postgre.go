@@ -19,11 +19,7 @@ var (
 	ErrInvalidDatabaseNameChars = errors.New("database name contains invalid characters")
 )
 
-type Database struct {
-	DB *gorm.DB
-}
-
-func NewDatabase(cfg *config.Config) (*Database, error) {
+func NewDatabase(cfg *config.Config) (*gorm.DB, error) {
 	baseDSN := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=postgres sslmode=disable",
 		cfg.Database.Host, cfg.Database.Port, cfg.Database.User, cfg.Database.Password)
 
@@ -110,7 +106,7 @@ func NewDatabase(cfg *config.Config) (*Database, error) {
 
 	log.Println("Миграция таблиц завершена успешно")
 
-	return &Database{DB: gormDB}, nil
+	return gormDB, nil
 }
 
 func createMissingIndexes(db *gorm.DB) error {
@@ -157,17 +153,4 @@ func createMissingIndexes(db *gorm.DB) error {
 	log.Println("Индексы проверены и созданы")
 
 	return nil
-}
-
-func (d *Database) GetDB() *gorm.DB {
-	return d.DB
-}
-
-func (d *Database) Close() error {
-	sqlDB, err := d.DB.DB()
-	if err != nil {
-		return err
-	}
-
-	return sqlDB.Close()
 }

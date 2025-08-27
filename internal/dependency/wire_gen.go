@@ -10,28 +10,41 @@ import (
 	"wb/config"
 	"wb/internal/config/database/postgre"
 	"wb/internal/http/controllers"
+	"wb/internal/orm/repositories"
 	"wb/internal/routes"
+	"wb/internal/services"
 )
 
 // Injectors from wire.go:
 
-// InitializeApp создает и инициализирует все зависимости приложения
 func InitializeApp() (*App, error) {
 	app := NewFiberApp()
 	configConfig, err := config.LoadConfig()
 	if err != nil {
 		return nil, err
 	}
-	database, err := postgre.NewDatabase(configConfig)
+	db, err := postgre.NewDatabase(configConfig)
 	if err != nil {
 		return nil, err
 	}
-	orderController := controllers.NewOrderController(database)
-	router := routes.NewRouter(app, configConfig, database, orderController)
+	cacheService := services.NewCacheService(db)
+	orderRepository := repositories.NewOrderRepository(db)
+	order := controllers.NewOrderController(db, cacheService, orderRepository)
+	kafkaConfig := ProvideKafkaConfig(configConfig)
+	kafkaService, err := services.NewKafkaService(kafkaConfig, cacheService)
+	if err != nil {
+		return nil, err
+	}
+	kafkaController := controllers.NewKafkaController(kafkaService)
+	router := routes.NewRouter(app, order, kafkaController)
+	fakeDataService := services.NewFakeDataService()
 	dependencyApp := &App{
 		FiberApp: app,
 		Router:   router,
 		Config:   configConfig,
+		Kafka:    kafkaService,
+		Cache:    cacheService,
+		FakeData: fakeDataService,
 	}
 	return dependencyApp, nil
 }

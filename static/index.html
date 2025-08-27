@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Управление заказами</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Управление заказами</h1>
+
+    <!-- Навигация по вкладкам -->
+    <nav class="tabs">
+      <button id="searchTab" class="tab-btn active" data-tab="search">Поиск заказа</button>
+      <button id="listTab" class="tab-btn" data-tab="list">Список всех заказов</button>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <!-- Вкладка поиска -->
+    <section id="searchSection" class="tab-content active">
+      <div class="search-panel">
+        <h2>Поиск заказа по UID</h2>
+        <form id="uidForm" class="search-form" autocomplete="off">
+          <div class="search-input-group">
+            <input id="uidInput" name="uid" type="search" placeholder="Введите order_uid заказа" />
+            <button id="uidBtn" type="submit">Найти</button>
+          </div>
+          <div id="uidError" class="error" role="status" aria-live="polite" display="hidden"></div>
+        </form>
+      </div>
+      
+      <div class="detail-panel">
+        <div id="orderDetail" class="detail">
+          <div class="placeholder">Введите UID заказа для поиска</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Вкладка списка -->
+    <section id="listSection" class="tab-content">
+      <div class="list-controls">
+        <div class="controls-left">
+          <button id="loadAllBtn" class="btn primary">Загрузить все заказы</button>
+          <button id="createOrderBtn" class="btn success">Создать заказ</button>
+          <button id="clearBtn" class="btn secondary">Очистить список</button>
+        </div>
+        <div class="controls-right">
+          <label class="checkbox-label">
+            <input id="autoRefresh" type="checkbox">
+            <span>Автообновление (30с)</span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="list-detail-layout">
+        <div class="list-panel">
+          <h3>Список заказов</h3>
+          <div id="orderList" class="list">
+            <div class="empty">Нажмите «Загрузить все заказы» для отображения списка</div>
+          </div>
+        </div>
+        
+        <div class="detail-panel">
+          <h3>Детали заказа</h3>
+          <div id="orderDetailList" class="detail">
+            <div class="placeholder">Выберите заказ из списка слева</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

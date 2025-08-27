@@ -19,6 +19,7 @@ type Order struct {
 	SmID              int            `json:"sm_id" gorm:"not null"`
 	DateCreated       time.Time      `json:"date_created" gorm:"not null"`
 	OofShard          string         `json:"oof_shard" gorm:"not null;size:10"`
+	TotalAmount       float64        `json:"total_amount" gorm:"not null;default:0"`
 	CreatedAt         time.Time      `json:"created_at"`
 	UpdatedAt         time.Time      `json:"updated_at"`
 	DeletedAt         gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`

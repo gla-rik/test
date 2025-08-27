@@ -11,6 +11,7 @@ import (
 type Config struct {
 	App      *App
 	Database *Database
+	Kafka    *KafkaConfig
 }
 
 func LoadConfig() (*Config, error) {
@@ -23,6 +24,7 @@ func LoadConfig() (*Config, error) {
 
 	cfg.App = &App{}
 	cfg.Database = &Database{}
+	cfg.Kafka = &KafkaConfig{}
 
 	err = envconfig.Process("", &cfg)
 	if err != nil {
