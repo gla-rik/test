@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="DataSourcePerFileMappings">
-    <file url="file://$PROJECT_DIR$/internal/orm/repositories/order.go" value="39cb1019-b22c-49ee-afe0-59b97b7869f3" />
-  </component>
-</project>
